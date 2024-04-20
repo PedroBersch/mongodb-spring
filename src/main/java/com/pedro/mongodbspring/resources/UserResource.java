@@ -1,6 +1,7 @@
 package com.pedro.mongodbspring.resources;
 
 import com.pedro.mongodbspring.domain.User;
+import com.pedro.mongodbspring.dto.UserDto;
 import com.pedro.mongodbspring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class UserResource {
     @Autowired
     private UserService userService;
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<User>> findAll(){
-        List<User> list = userService.findAll();
+    public ResponseEntity<List<UserDto>> findAll(){
+        List<UserDto> list = userService.findAll().stream().map(x -> new UserDto(x)).toList();
         return ResponseEntity.ok().body(list);
     }
 }
