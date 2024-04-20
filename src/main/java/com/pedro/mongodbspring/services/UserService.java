@@ -1,6 +1,7 @@
 package com.pedro.mongodbspring.services;
 
 import com.pedro.mongodbspring.domain.User;
+import com.pedro.mongodbspring.dto.UserDto;
 import com.pedro.mongodbspring.repository.UserRepository;
 import com.pedro.mongodbspring.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
-
+    public User insert(User user) {
+        return userRepository.insert(user);
+    }
+    public User fromDto(UserDto userDto){
+        return new User(userDto.getId(),userDto.getName(),userDto.getEmail());
+    }
 }
