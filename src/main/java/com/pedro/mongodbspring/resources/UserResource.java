@@ -33,6 +33,7 @@ public class UserResource {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserDto> insert(@RequestBody UserDto userDto) {
         User user = userService.fromDto(userDto);
+        userService.insert(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/id").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
