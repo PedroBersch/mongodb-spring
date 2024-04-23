@@ -1,5 +1,6 @@
 package com.pedro.mongodbspring.resources;
 
+import com.pedro.mongodbspring.domain.Post;
 import com.pedro.mongodbspring.domain.User;
 import com.pedro.mongodbspring.dto.UserDto;
 import com.pedro.mongodbspring.services.UserService;
@@ -38,18 +39,26 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(userAddDto);
     }
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto,@PathVariable String id){
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto, @PathVariable String id) {
         User obj = userService.fromDto(userDto);
         obj.setId(id);
         obj = userService.update(obj);
         UserDto userDtoUpdated = new UserDto(obj);
         return ResponseEntity.ok().body(userDtoUpdated);
     }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<UserDto> delete(@PathVariable String id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
     }
 }
 
